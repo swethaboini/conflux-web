@@ -144,6 +144,7 @@
 	                        colspan="{{collectionsheetdata.loanProducts.length}}">{{'label.heading.duecollections' |
 	                        translate}}
 	                    </th>
+                        <th class="empty" scope="colgroup">Due Charge Collections</th>
 	                    <th class="highlightcol" scope="colgroup"
 	                        colspan="{{collectionsheetdata.savingsProducts.length}}">
 	                        {{'label.heading.due.savings.collections' |
@@ -155,6 +156,7 @@
 	                    <th scope="colgroup" ng-repeat="loanproduct in collectionsheetdata.loanProducts">
 	                        {{loanproduct.name}}/{{'label.heading.charges' | translate}}
 	                    </th>
+                       <th>Recurring Charge</th>
 	                    <th scope="colgroup" ng-repeat="savingproduct in collectionsheetdata.savingsProducts">
 	                        {{savingproduct.name}}
 	                    </th>
@@ -194,6 +196,13 @@
 	                                    </div>
 	                                </span>
 	                    </td>
+                        <td>
+                            <div class="col-md-7 paddinglr0px">
+                                <input id="charge" type="text" class="input-sm form-control" number-format
+                                       ng-model="client.charge"
+                                       ng-change="sumTotalChargeCollection(client,group)">
+                            </div>
+                        </td>
 	                    <td>
 	                        <select id="clientsAttendance[{{$index}}][attendanceType]"
 	                                ng-model="client.attendanceType.id" class="input-sm form-control"
@@ -227,6 +236,8 @@
 	                                             number-format ng-model="grouptotal.dueAmount" disabled="disabled">
 					                  </span>
 	                    </td>
+                        <td><input type="text" class="input-sm form-control"
+                                   number-format ng-model="group.totalClientCharges" ></td>
 	                    <td></td>
 	                </tr>
 	                </tbody>

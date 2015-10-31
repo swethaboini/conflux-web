@@ -17,6 +17,9 @@
             scope.newGroupTotal = {};
             scope.savingsGroupsTotal = [];
 			scope.date.transactionDate = new Date();
+            scope.totalClients = 0;
+
+
             var centerOrGroupResource = '';
             resourceFactory.officeResource.getAllOffices(function (data) {
                 scope.offices = data;
@@ -45,6 +48,9 @@
 
                     resourceFactory.groupResource.getAllGroups({officeId: scope.officeId, orderBy: 'name', sortOrder: 'ASC', limit: -1}, function (data) {
                         scope.groups = data;
+
+
+
                     });
                 }
             };
@@ -66,6 +72,7 @@
 
                     resourceFactory.groupResource.getAllGroups({officeId: scope.officeId, staffId: loanOfficerId, orderBy: 'name', sortOrder: 'ASC', limit: -1}, function (data) {
                         scope.groups = data;
+
                     });
                 } else {
                     scope.centers = '';
@@ -139,6 +146,21 @@
                 if (centerOrGroupResource === "centerResource" && scope.calendarId !== "") {
                     resourceFactory.centerResource.save({'centerId': scope.centerId, command: 'generateCollectionSheet'}, scope.formData, function (data) {
                         if (data.groups.length > 0) {
+                            angular.forEach(data.groups, function (group) {
+                                group.totalClientCharges = scope.totalClients;
+                                alert(group.totalClientCharges);
+                                for(var i in data.groups.clients){
+                                    for(var j in data.clientCharges){
+                                        if(data.groups.clients[i].clientId==data.clientCharges[j].clientId){
+                                            group.client.charge = data.clientCharges[j].Amount;
+                                            group.totalClientCharges =group.totalClientCharges+ data.clientCharges[j].Amount;
+                                            alert( group.totalClientCharges);
+
+                                        }
+                                    }
+                                }
+
+                            });
                             scope.collectionsheetdata = data;
                             scope.clientsAttendanceArray(data.groups);
                             //scope.total(data);
@@ -155,6 +177,9 @@
                 } else if (centerOrGroupResource === "groupResource" && scope.calendarId !== "") {
                     resourceFactory.groupResource.save({'groupId': scope.groupId, command: 'generateCollectionSheet'}, scope.formData, function (data) {
                         if (data.groups.length > 0) {
+                            angular.forEach(data.groups, function (group) {
+                                group.totalClientCharges = scope.totalClients;
+                            });
                             scope.collectionsheetdata = data;
                             scope.clientsAttendanceArray(data.groups);
                             //scope.total(data);
@@ -184,6 +209,19 @@
                 scope.sumLoansTotal();
                 scope.sumLoansDueByCurrency();
                 scope.sumSavingsDueByCurrency();
+            };
+
+           scope.sumTotalChargeCollection = function (client,group) {
+               if (isNaN(client.charge)) {
+                   client.charge = parseInt(0);
+
+               }
+               group.totalClientCharges =0;
+               for(var i in group.clients){
+                   group.totalClientCharges = group.totalClientCharges+group.clients[i].charge;
+
+               }
+
             };
 
             scope.sumLoansDueByCurrency = function () {

@@ -4,9 +4,12 @@
             scope.offices = [];
             scope.cancelRoute = routeParams.id;
             scope.date = {};
+            scope.synchmeeting = false;
+
 
             resourceFactory.clientChargesResource.get({clientId: routeParams.id, resourceType: 'template'}, function (data) {
                 scope.chargeOptions = data.chargeOptions;
+
             });
 
             scope.chargeSelected = function (id) {

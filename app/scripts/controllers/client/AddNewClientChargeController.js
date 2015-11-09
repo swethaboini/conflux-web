@@ -4,9 +4,12 @@
             scope.offices = [];
             scope.cancelRoute = routeParams.id;
             scope.date = {};
+            scope.synchmeeting = false;
+
 
             resourceFactory.clientChargesResource.get({clientId: routeParams.id, resourceType: 'template'}, function (data) {
                 scope.chargeOptions = data.chargeOptions;
+
             });
 
             scope.chargeSelected = function (id) {
@@ -21,6 +24,7 @@
             scope.submit = function () {
                 this.formData.locale = scope.optlang.code;
                 this.formData.dateFormat = scope.df;
+                this.formData.synchMeeting = scope.synchmeeting;
                 if (scope.date.specificduedate) {
                     this.formData.dueDate = dateFilter(scope.date.specificduedate, scope.df);
                 }

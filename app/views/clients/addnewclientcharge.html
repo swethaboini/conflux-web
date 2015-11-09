@@ -1,10 +1,10 @@
-<div class="paddedbottom10">
+<div class="paddedbottom10" ng-controller="AddNewClientChargeController">
     <ul class="breadcrumb">
-        <li><a ng-href="#/viewclient/{{clientId}}">{{'label.anchor.viewclient' | translate}}</a></li>
+        <li><a href="#/viewclient/{{cancelRoute}}">{{'label.anchor.viewclient' | translate}}</a></li>
         <li class="active">{{ 'label.button.addcharge' | translate }}</li>
     </ul>
-</div>
-<form name="clientchargeform" novalidate="" class="form-horizontal" ng-controller="AddNewClientChargeController"
+<br><br>
+<form name="clientchargeform" novalidate="" class="form-horizontal"
       rc-submit="submit()">
     <api-validate></api-validate>
     <fieldset>
@@ -53,6 +53,14 @@
                     </select>
                 </div>
             </div>
+            <div ng-show="chargeTimeType!=2" class="form-group">
+                <label class="control-label col-sm-2">{{ 'label.input.syncchargeswithmeeting' | translate }}</label>
+                <div class="col-sm-1">
+                    <label class="checkbox">
+                        <input id="issynch" class="ng-pristine ng-valid" type="checkbox" ng-model="synchmeeting">
+                    </label>
+                </div>
+            </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2">{{ 'label.input.dueforcollectedon' | translate }}<span
@@ -73,3 +81,4 @@
         </div>
     </fieldset>
 </form>
+</div>
